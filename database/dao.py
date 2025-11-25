@@ -114,7 +114,7 @@ class DAO:
             cnx.close()
 
         return result
-l = DAO.get_tratta()
+l = DAO.get_hub()
 
 
 
