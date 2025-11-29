@@ -13,55 +13,54 @@ class Model:
         Costruisce il grafo (self.G) inserendo tutti gli Hub (i nodi) presenti e filtrando le Tratte con
         guadagno medio per spedizione >= threshold (euro)
         """
-        #il grafo è stato inzializzato nel costruttore adesso sara popolato da nodi(hub) e archi (le tratte) con peso Tratta.peso_tratta
-        self._nodes = []
-        self._edges = []
+
+
+
         self.G.clear()
-        self._nodes = DAO.get_hub()
-        self._edges = DAO.get_tratta()
-        self.G.add_nodes_from(self._nodes)
-        tratte_totali = DAO.get_tratta()
-        for t in tratte_totali:
+        self._nodes = []
+        self._edges = [] # Questa lista conterrà le 31 tratte
+
+        all_tratte = DAO.get_tratta()
+
+
+
+        for t in all_tratte:
             if t.peso_tratta() >= threshold:
-                u = t.hub_partenza
-                v = t.hub_arrivo
+                u = t.h1
+                v = t.h2
                 peso = t.peso_tratta()
 
-                # Aggiungo l'arco tra u e v con il peso specificato
+                # Aggiungo all'arco (Il grafo ne conterrà 29 alla fine)
                 self.G.add_edge(u, v, weight=peso)
+
+                # Aggiungo alla lista (La lista ne conterrà 31)
+                self._edges.append((t,peso))
+
+
         return self.G
-
-
-
-
-
-
 
     def get_num_edges(self):
         """
         Restituisce il numero di Tratte (edges) del grafo
         :return: numero di edges del grafo
         """
-        num_edges = self.G.number_of_edges()
-        return num_edges
+
+        return len(self._edges)
 
     def get_num_nodes(self):
         """
         Restituisce il numero di Hub (nodi) del grafo
         :return: numero di nodi del grafo
         """
-        num_nodi = self.G.number_of_nodes()
-        return num_nodi
+
+        return len(DAO.get_hub()) # mi restituisce tutti gli hub esistenti
 
     def get_all_edges(self):
         """
         Restituisce tutte le Tratte (gli edges) con i corrispondenti pesi
         :return: gli edges del grafo con gli attributi (il weight)
         """
-        for u, v,data in self.G.edges(data=True):
-            peso = data['weight']
-            # Restituisco la tripla pulita
-            yield u, v, peso
+        return self._edges
 
 
 

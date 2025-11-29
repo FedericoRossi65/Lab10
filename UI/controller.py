@@ -16,5 +16,15 @@ class Controller:
         * Numero di Tratte
         * Lista di Tratte che superano il costo indicato come soglia
         """
-        # TODO
+
+        self._view.lista_visualizzazione.controls.clear()
+        soglia = float(self._view.guadagno_medio_minimo.value)
+        self._model.costruisci_grafo(soglia)
+        self._view.lista_visualizzazione.controls.append(ft.Text(f"Numero di Hub: {self._model.get_num_nodes()}"))
+        self._view.lista_visualizzazione.controls.append(ft.Text(f"Numero di Tratte: {self._model.get_num_edges()}"))
+        self._view.lista_visualizzazione.controls.append(ft.Text(f"{self._model.get_all_edges()}"))
+
+
+        self._view.update()
+
 
