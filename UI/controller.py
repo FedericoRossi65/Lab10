@@ -22,7 +22,10 @@ class Controller:
         self._model.costruisci_grafo(soglia)
         self._view.lista_visualizzazione.controls.append(ft.Text(f"Numero di Hub: {self._model.get_num_nodes()}"))
         self._view.lista_visualizzazione.controls.append(ft.Text(f"Numero di Tratte: {self._model.get_num_edges()}"))
-        self._view.lista_visualizzazione.controls.append(ft.Text(f"{self._model.get_all_edges()}"))
+        lista_tratte = self._model.get_all_edges()
+        for oggetto in lista_tratte:
+
+            self._view.lista_visualizzazione.controls.append(ft.Text(f"{oggetto[0]} --> Guadagno medio per spedizione: {oggetto[1]}"))
 
 
         self._view.update()

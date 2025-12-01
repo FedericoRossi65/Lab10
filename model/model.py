@@ -9,33 +9,20 @@ class Model:
         self.G = nx.Graph()
 
     def costruisci_grafo(self, threshold):
-        """
-        Costruisce il grafo (self.G) inserendo tutti gli Hub (i nodi) presenti e filtrando le Tratte con
-        guadagno medio per spedizione >= threshold (euro)
-        """
-
-
-
         self.G.clear()
-        self._nodes = []
-        self._edges = [] # Questa lista conterrà le 31 tratte
+        self._edges = []
 
         all_tratte = DAO.get_tratta()
-
-
+        hubs = {h.id: h.nome for h in DAO.get_hub()}
 
         for t in all_tratte:
-            if t.peso_tratta() >= threshold:
-                u = t.h1
-                v = t.h2
-                peso = t.peso_tratta()
+            peso = t.peso_tratta()
+            if peso >= threshold:
+                self.G.add_edge(t.h1, t.h2, weight=peso)
 
-                # Aggiungo all'arco (Il grafo ne conterrà 29 alla fine)
-                self.G.add_edge(u, v, weight=peso)
-
-                # Aggiungo alla lista (La lista ne conterrà 31)
-                self._edges.append((t,peso))
-
+                # salva la stringa coi nomi, NON fare query
+                nome_tratta = f"{hubs[t.h1]} --> {hubs[t.h2]}"
+                self._edges.append((nome_tratta, peso))
 
         return self.G
 
@@ -60,6 +47,7 @@ class Model:
         Restituisce tutte le Tratte (gli edges) con i corrispondenti pesi
         :return: gli edges del grafo con gli attributi (il weight)
         """
+
         return self._edges
 
 

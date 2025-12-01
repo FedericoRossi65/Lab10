@@ -11,7 +11,9 @@ class Tratta:
         return isinstance(other, Tratta) and self.h1 == other.h1 and self.h2 == other.h2
 
     def __str__(self):
-        return f"Tratta: {self.h1} | {self.h2}"
+
+
+        return f"Tratta: {self.h1} | {self.h2}  "
 
     def __repr__(self):
         return f"Tratta: {self.h1} | {self.h2}"
